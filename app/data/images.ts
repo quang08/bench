@@ -24,18 +24,9 @@ import img6c from "./6c.jpg";
 import img7c from "./7c.jpg";
 import img8c from "./8c.jpg";
 
-export interface ImageItem {
-  id: number;
-  alt: string;
-}
-
 export interface LocalImageItem {
   src: StaticImageData;
   alt: string;
-}
-
-export function picsum(id: number, w: number, h: number) {
-  return `https://picsum.photos/id/${id}/${w}/${h}`;
 }
 
 export const FULL_WIDTH_IMAGES: LocalImageItem[] = [

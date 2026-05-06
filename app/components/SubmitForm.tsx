@@ -1,24 +1,56 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, useRef } from "react";
 
 type Status = "idle" | "loading" | "success" | "error";
 
+const MAX_BYTES = 3 * 1024 * 1024;
+
+function readAsBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve((reader.result as string).split(",")[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
 export default function SubmitForm() {
   const [message, setMessage] = useState("");
+  const [image, setImage] = useState<File | null>(null);
+  const [imageError, setImageError] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [errorText, setErrorText] = useState("");
+  const fileRef = useRef<HTMLInputElement>(null);
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0] ?? null;
+    setImageError("");
+    if (file && file.size > MAX_BYTES) {
+      setImageError("Ảnh phải nhỏ hơn 3MB");
+      e.target.value = "";
+      setImage(null);
+      return;
+    }
+    setImage(file);
+  }
+
+  async function handleSubmit(e: { preventDefault(): void }) {
     e.preventDefault();
     setStatus("loading");
     setErrorText("");
 
     try {
+      let imagePayload: { name: string; type: string; data: string } | undefined;
+      if (image) {
+        const data = await readAsBase64(image);
+        imagePayload = { name: image.name, type: image.type, data };
+      }
+
       const res = await fetch("/api/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message }),
+        body: JSON.stringify({ message, image: imagePayload }),
       });
 
       if (!res.ok) {
@@ -28,6 +60,8 @@ export default function SubmitForm() {
 
       setStatus("success");
       setMessage("");
+      setImage(null);
+      if (fileRef.current) fileRef.current.value = "";
     } catch (err) {
       setStatus("error");
       setErrorText(err instanceof Error ? err.message : "Something went wrong");
@@ -49,6 +83,21 @@ export default function SubmitForm() {
         />
       </label>
 
+      <label className="font-intel-mono flex flex-col gap-2 text-sm font-medium text-zinc-400 lg:text-xl">
+        Ảnh của ghế/bàn bóng bàn của bạn (tuỳ chọn, tối đa 3MB)
+        <input
+          ref={fileRef}
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          disabled={status === "loading"}
+          className="font-intel-mono w-full text-sm text-zinc-400 file:mr-4 file:rounded-lg file:border-0 file:bg-zinc-800 file:px-4 file:py-2 file:text-sm file:text-zinc-300 hover:file:bg-zinc-700 disabled:opacity-50"
+        />
+      </label>
+      {imageError && (
+        <p className="font-intel-mono text-sm text-red-400">{imageError}</p>
+      )}
+
       <button
         type="submit"
         disabled={status === "loading" || message.trim() === ""}
@@ -58,9 +107,7 @@ export default function SubmitForm() {
       </button>
 
       {status === "success" && (
-        <p className="font-intel-mono text-sm text-green-400">
-          Cảm ơn bạn!
-        </p>
+        <p className="font-intel-mono text-sm text-green-400">Cảm ơn bạn!</p>
       )}
       {status === "error" && (
         <p className="font-intel-mono text-sm text-red-400">{errorText}</p>

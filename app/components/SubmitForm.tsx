@@ -59,7 +59,7 @@ export default function SubmitForm() {
 
       {status === "success" && (
         <p className="font-intel-mono text-sm text-green-400">
-          Message sent successfully!
+          Cảm ơn bạn!
         </p>
       )}
       {status === "error" && (

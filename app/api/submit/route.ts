@@ -22,14 +22,14 @@ export async function POST(req: NextRequest) {
 
   const { error } = await resend.emails.send({
     from: "Bench <onboarding@resend.dev>",
-    to: process.env.CONTACT_EMAIL ?? "quanganh2k3@gmail.com",
-    subject: "New submission from Bench",
+    to: process.env.CONTACT_EMAIL ?? "trungtran3423@gmail",
+    subject: "Có người trả lời Bench!!!",
     text: message,
   });
 
   if (error) {
     console.error("[resend]", error);
-    return NextResponse.json({ error: "Failed to send email" }, { status: 500 });
+    return NextResponse.json({ error: "Lỗi gửi :(" }, { status: 500 });
   }
 
   return NextResponse.json({ ok: true });

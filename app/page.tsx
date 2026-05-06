@@ -1,65 +1,54 @@
 import Image from "next/image";
+import Hero from "@/app/components/Hero";
+import ImageAccordion from "@/app/components/ImageAccordion";
+import ImageGrid from "@/app/components/ImageGrid";
+import SubmitForm from "@/app/components/SubmitForm";
+import {
+  FULL_WIDTH_IMAGES,
+  GRID_3X3_IMAGES,
+  GRID_2X4_IMAGES,
+} from "@/app/data/images";
+import img1b from "@/app/data/1b.jpg";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="w-full">
+      <Hero />
+
+      <ImageAccordion images={FULL_WIDTH_IMAGES} />
+
+      <ImageGrid
+        title=""
+        images={GRID_3X3_IMAGES}
+        cols={3}
+        aspect="video"
+      />
+      <p className="px-4 pb-4 pt-1 text-center font-intel-mono text-xs text-zinc-500 sm:px-6 lg:px-8 lg:text-xl">
+        Ghế yêu thích của Tom Hansen ở Angels Knoll trong phim 500 dáy of summer
+      </p>
+
+      <section className="px-4 sm:px-6 lg:px-8">
+        <div className="relative w-full aspect-video">
+          <Image src={img1b} alt="Bench in flood" fill className="object-cover" />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      </section>
+      <p className="px-4 pb-2 pt-1 text-center font-intel-mono text-xs text-zinc-500 sm:px-6 lg:px-8 lg:text-xl">
+        Ghế đá công viên Hà Nội ngày ngập nước trong ảnh của Nguyễn Hữu Bảo
+      </p>
+
+      <ImageGrid
+        title=""
+        images={GRID_2X4_IMAGES.slice(0, 4)}
+        cols={2}
+        aspect="portrait"
+      />
+      <p className="px-4 pb-2 pt-1 text-center font-intel-mono text-xs text-zinc-500 sm:px-6 lg:px-8 lg:text-xl">
+        Bàn bóng bàn của Tomiyasu Hayahis ở Leipzig trong dự án ảnh TTP
+      </p>
+
+      <section className="px-4 py-10 sm:px-6 lg:px-8">
+        <SubmitForm />
+      </section>
+    </main>
   );
 }

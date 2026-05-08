@@ -70,33 +70,35 @@ export default function SubmitForm() {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <label className="font-intel-mono flex flex-col gap-2 text-sm font-medium text-zinc-400 lg:text-xl">
-        Bạn ở thành phố nào và cái ghế/bàn bóng bàn của bạn là gì? Tôi sẽ ghé thăm và gửi một bản in vật lý (hoặc không haha).
-        <input
-          type="text"
-          required
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="…"
-          className="font-intel-mono w-full rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-3 text-base text-white placeholder-zinc-600 outline-none transition focus:border-white focus:ring-2 focus:ring-white/10 disabled:opacity-50"
-          disabled={status === "loading"}
-        />
-      </label>
+      <div className="flex flex-col gap-4 rounded-xl bg-white p-4 text-black">
+        <label className="font-intel-mono flex flex-col gap-2 text-sm lg:text-xl">
+          <span>Bạn ở tìm thấy quyển zine này ở đâu? Bạn ở thành phố nào và <b><i>cái ghế đá</i></b> của bạn là gì? Tôi sẽ ghé thăm và gửi một bản in vật lý (hoặc không haha).</span>
+          <input
+            type="text"
+            required
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="…"
+            className="font-intel-mono w-full rounded-lg border border-zinc-300 bg-zinc-100 px-4 py-3 text-base text-black placeholder-zinc-400 outline-none transition focus:border-zinc-600 focus:ring-2 focus:ring-zinc-600/10 disabled:opacity-50"
+            disabled={status === "loading"}
+          />
+        </label>
 
-      <label className="font-intel-mono flex flex-col gap-2 text-sm font-medium text-zinc-400 lg:text-xl">
-        Ảnh của ghế/bàn bóng bàn của bạn (tuỳ chọn, tối đa 3MB)
-        <input
-          ref={fileRef}
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          disabled={status === "loading"}
-          className="font-intel-mono w-full text-sm text-zinc-400 file:mr-4 file:rounded-lg file:border-0 file:bg-zinc-800 file:px-4 file:py-2 file:text-sm file:text-zinc-300 hover:file:bg-zinc-700 disabled:opacity-50"
-        />
-      </label>
-      {imageError && (
-        <p className="font-intel-mono text-sm text-red-400">{imageError}</p>
-      )}
+        <label className="font-intel-mono flex flex-col gap-2 text-sm font-medium text-zinc-500 lg:text-xl">
+          Ảnh chụp vị trí tìm thấy zine và vật thể/không gian trong câu chuyện của bạn (tuỳ chọn, tối đa 3MB)
+          <input
+            ref={fileRef}
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            disabled={status === "loading"}
+            className="font-intel-mono w-full text-sm text-zinc-500 file:mr-4 file:rounded-lg file:border-0 file:bg-zinc-200 file:px-4 file:py-2 file:text-sm file:text-zinc-700 hover:file:bg-zinc-300 disabled:opacity-50"
+          />
+        </label>
+        {imageError && (
+          <p className="font-intel-mono text-sm text-red-500">{imageError}</p>
+        )}
+      </div>
 
       <button
         type="submit"
